@@ -7,9 +7,13 @@ const router = express.Router();
 const feedController = require('../controllers/feed');
 
 //rotte
+// per passare un parametro dinamico bisogna mettere /:id e leggerlo nel controller come req.params.id
+// per leggerlo come parametro query usiamo ad esempio req.query.stringToSearch
+// GET ALL
 router.get('/posts', feedController.getPosts);
 
 // validazione con express-validator -> https://github.com/validatorjs/validator.js
+// CREATE
 router.post('/post',
   [
     check('author').trim()
@@ -27,5 +31,11 @@ router.post('/post',
     query('max').custom((value, {req}) => value > 100).withMessage('Il parametro max deve essere maggiore di 100')
   ]
 ,feedController.createPost);
+
+// EDIT
+router.put('/post/:id', feedController.editPost);
+
+// DELETE
+router.delete('/post/:id', feedController.deletePost);
 
 module.exports = router;
